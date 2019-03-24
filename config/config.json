@@ -1,0 +1,10 @@
+{
+    "machineName" : "uniqueHostname/machinename",
+    "hostname" : "--VIRTUAL--",
+    "ip" : "--VIRTUAL--",
+    "apiUrl" : "--VIRTUAL--",
+    "devices" :
+    [
+        { "deviceName" : "uniqueDeviceNameForThisMachine", "actions" : [ "On", "Off", "Read" ] }
+    ]
+}
