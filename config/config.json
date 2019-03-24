@@ -1,8 +1,5 @@
 {
-    "machineName" : "uniqueHostname/machinename",
-    "hostname" : "--VIRTUAL--",
-    "ip" : "--VIRTUAL--",
-    "apiUrl" : "--VIRTUAL--",
+    "machineName" : "MyPrimeRaspberry",
     "devices" :
     [
         { "deviceName" : "uniqueDeviceNameForThisMachine", "actions" : [ "On", "Off", "Read" ] }

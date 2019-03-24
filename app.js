@@ -53,8 +53,6 @@ var client = dgram.createSocket("udp4");
 const PORT = 20000;
 const MULTICAST_ADDR = "233.255.255.255";
 const socket = dgram.createSocket({ type: "udp4", reuseAddr: true });
-console.log("HOST :" + config.hostname);
-const broadcastMessage = Buffer.from(`${ JSON.stringify(config)}`);
 socket.bind(PORT);
 socket.on("listening", function() {
     socket.addMembership(MULTICAST_ADDR);
@@ -64,11 +62,16 @@ socket.on("listening", function() {
     flogger.log(`UDP socket listening on ${address.address}:${address.port} pid: ${process.pid}`, "INFO");
 });
 function sendMessage() {  
+  config.timeStamp = new Date(new Date().toUTCString());
+  const broadcastMessage = Buffer.from(`${ JSON.stringify(config)}`)
   socket.send(broadcastMessage, 0, broadcastMessage.length, PORT, MULTICAST_ADDR, function() {
     flogger.log(`Sending message "${broadcastMessage}"`, "INFO");
   });  
 }
 socket.on("message", function(message, rinfo) {
+  var obj = JSON.parse(message);
+  obj.ip = rinfo.address;
+  loggedMachines.put(obj.machineName, obj);
   console.info(`Message from: ${rinfo.address}:${rinfo.port} - ${message}`);
 });
 
