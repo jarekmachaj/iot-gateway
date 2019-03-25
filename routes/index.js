@@ -9,7 +9,14 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/machines', function(req, res, next){  
-  res.json(loggedMachines.exportJson());
+  var machines = [];
+  loggedMachines.keys().forEach(key => {
+    var machine = loggedMachines.get(key);
+    machines.push( {'machineName': machine.machineName, 'ip' : machine.ip, 'timeStamp' : machine.timeStamp });
+  });
+  res.render('machines', { title: 'Machines', machines : machines } );
 });
+
+
 
 module.exports = router;
