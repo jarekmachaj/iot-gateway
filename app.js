@@ -5,27 +5,21 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const debug = require('debug')('app');
 const machineService = require('./machines/machineService')
-const expressip = require('express-ip');
 
-let indexRouter = require('./routes/index');
-let apiRouter = require('./routes/api');
-let app = express();
+const indexRouter = require('./routes/index');
+const apiRouter = require('./routes/api');
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 //pretty print json
 app.set('json spaces', 2);
-
-//ip read
-app.set('trust proxy', true);
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(expressip().getIpInfoMiddleware);
 
 app.use('/', indexRouter);
 app.use('/api', apiRouter);
