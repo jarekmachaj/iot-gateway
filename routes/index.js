@@ -1,7 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var loggedMachines =  require('memory-cache');
-var endOfLine = require('os').EOL;
+const express = require('express');
+const router = express.Router();
+const machineService = require('./../machines/machineService');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -9,14 +8,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/machines', function(req, res, next){  
-  var machines = [];
-  loggedMachines.keys().forEach(key => {
-    var machine = loggedMachines.get(key);
-    machines.push( {'machineName': machine.machineName, 'ip' : machine.ip, 'timeStamp' : machine.timeStamp });
-  });
-  res.render('machines', { title: 'Machines', machines : machines } );
+  res.json(machineService.recognizedMachines);  
 });
-
-
 
 module.exports = router;

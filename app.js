@@ -1,35 +1,34 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var debug = require('debug')('app');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const debug = require('debug')('app');
+const machineService = require('./machines/machineService')
+const expressip = require('express-ip');
 
-var flogger = require('fast-logger');
-flogger.settings.logging = true;
-
-var loggedMachines =  require('memory-cache');
-const config = require(path.join(__dirname, 'helpers', 'configCache.js'));
-//-- udp modules
-const dgram = require("dgram");
-
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-
-var app = express();
+let indexRouter = require('./routes/index');
+let apiRouter = require('./routes/api');
+let app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+//pretty print json
+app.set('json spaces', 2);
+
+//ip read
+app.set('trust proxy', true);
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(expressip().getIpInfoMiddleware);
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -47,33 +46,7 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-
 //udp broadcast
-var client = dgram.createSocket("udp4");
-const PORT = 20000;
-const MULTICAST_ADDR = "233.255.255.255";
-const socket = dgram.createSocket({ type: "udp4", reuseAddr: true });
-socket.bind(PORT);
-socket.on("listening", function() {
-    socket.addMembership(MULTICAST_ADDR);
-    //from config, broadcasting every 10sec
-    setInterval(sendMessage, 10000);
-    const address = socket.address();
-    flogger.log(`UDP socket listening on ${address.address}:${address.port} pid: ${process.pid}`, "INFO");
-});
-function sendMessage() {  
-  config.timeStamp = new Date(new Date().toUTCString());
-  const broadcastMessage = Buffer.from(`${ JSON.stringify(config)}`)
-  socket.send(broadcastMessage, 0, broadcastMessage.length, PORT, MULTICAST_ADDR, function() {
-    flogger.log(`Sending message "${broadcastMessage}"`, "INFO");
-  });  
-}
-socket.on("message", function(message, rinfo) {
-  var obj = JSON.parse(message);
-  obj.ip = rinfo.address;
-  loggedMachines.put(obj.machineName, obj);
-  console.info(`Message from: ${rinfo.address}:${rinfo.port} - ${message}`);
-});
-
+machineService.startUDPListenBroadcast();
 
 module.exports = app;
