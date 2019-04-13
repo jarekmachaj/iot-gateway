@@ -32,14 +32,13 @@ module.exports.device_action_execute_post = (req, res) => {
         res.send('Action not defined');
         return;
     }
-    console.log(`executing ${req.params.actionId}`);
+    
     var actionId = req.params.actionId;
     var action = device.actions.find(action => action.id == actionId);
     if (action == undefined) {
         res.send(`Action ${actionId} not found`);
         return;
     }
-    console.log(`executing ${action.id}`);
-    action.params = req.body.actionParams;
+    action.params = req.body;
     deviceService.executeAction(action, result => res.json(result));
 }
