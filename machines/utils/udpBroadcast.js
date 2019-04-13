@@ -10,8 +10,8 @@ class UdpBroadcast {
             const MULTICAST_ADDR = "233.255.255.255";
             const socket = dgram.createSocket({ type: "udp4", reuseAddr: true });        
             const sendMessage = () => {  
-                console.log("message:");
-                console.log(this.broadcastedMessage);
+                //console.log("message:");
+                //console.log(this.broadcastedMessage);
                 var buff = Buffer.from(JSON.stringify(this.broadcastedMessage));
                 socket.send(buff, 0, buff.length, PORT, MULTICAST_ADDR, () => { 
                 debugudp(`Broadcasting ${this.broadcastedMessage}`)
@@ -26,7 +26,7 @@ class UdpBroadcast {
                 debugudp(`UDP socket listening on ${address.address}:${address.port} pid: ${process.pid}`, "INFO");
             });        
             socket.on("message", (message, rinfo) => {
-                console.log(message);
+                //console.log(message);
                 let remoteConfig = JSON.parse(message);
                 this.onMessageReceived(remoteConfig, rinfo.address);
                 debugudp(`Message from: ${rinfo.address}:${rinfo.port} - ${message}`);

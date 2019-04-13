@@ -1,4 +1,5 @@
 const persitenceService = require('../systemServices/persistence');
+const machineService = require('./machineService');
 
 module.exports.machines_list = (req, res) => {
     res.json(persitenceService.recognizedMachines);
