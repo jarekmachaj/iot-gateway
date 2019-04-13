@@ -18,7 +18,7 @@
             "actions" : 
                 [
                     { "id" : "read", "type" : "read", "customAction" : "osService"},
-                    { "id" : "wake", "type" : "post", "customAction" : "wolService", "params" : ["macAddress"]}
+                    { "id" : "wake", "type" : "post", "customAction" : "wolService", "params" : ["macAddress", "ipAddress"]}
                 ] 
         }
              
