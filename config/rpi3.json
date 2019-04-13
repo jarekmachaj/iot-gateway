@@ -1,0 +1,24 @@
+{
+    "id" : "MyPrimeRaspberry",
+    "mode" : "server",
+    "devices" :
+    [        
+        { 
+            "id" : "thermometerRpi", 
+            "description" : "Simple thermometer",
+            "actions" : 
+                [
+                    { "id" : "read", "type" : "get", "cmd" : ""}
+                ] 
+        },
+        { 
+            "id" : "switchRf433Rpi", 
+            "description" : "Simple Rpi switch",
+            "actions" : 
+                [
+                    { "id" : "on", "type" : "post", "cmd" : ""},
+                    { "id" : "off", "type" : "post", "cmd" : ""}
+                ] 
+        }
+    ]
+}

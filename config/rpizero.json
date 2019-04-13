@@ -1,0 +1,16 @@
+{
+    "id" : "MyZeroRaspberry",
+    "mode" : "server",
+    "devices" :
+    [
+        {
+            "id" : "piZeroDHT",
+            "description" : "Termometr na biurku",
+            "actions" : 
+                [
+                    { "id" : "readTemp", "type" : "get", "customAction" : "dhtService"},
+                    { "id" : "readHumidity", "type" : "get", "customAction" : "dhtService"}
+                ] 
+        }     
+    ]
+}

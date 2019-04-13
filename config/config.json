@@ -1,24 +1,16 @@
 {
-    "id" : "MyPrimeRaspberry",
+    "id" : "WindowsServer",
     "mode" : "server",
     "devices" :
-    [
+    [        
         { 
-            "id" : "thermometerRpi", 
-            "description" : "Simple thermometer",
+            "id" : "OS", 
+            "description" : "Basic OS information",
             "actions" : 
                 [
-                    { "id" : "read", "type" : "get", "cmd" : ""}
+                    { "id" : "read", "type" : "read", "customAction" : "osService"},
+                    { "id" : "sleep", "type" : "post", "customAction" : "osService"}
                 ] 
-        },
-        { 
-            "id" : "switchRf433Rpi", 
-            "description" : "Simple Rpi switch",
-            "actions" : 
-                [
-                    { "id" : "on", "type" : "post", "cmd" : ""},
-                    { "id" : "off", "type" : "post", "cmd" : ""}
-                ] 
-        }
+        }           
     ]
 }

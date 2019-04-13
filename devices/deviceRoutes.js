@@ -6,5 +6,6 @@ router.get('/', deviceController.devices_list);
 router.get('/:deviceId', deviceController.device_details_get);
 router.get('/:deviceId/actions', deviceController.device_actions_get);
 router.get('/:deviceId/action/:actionId', deviceController.device_action_details_get);
+router.post('/:deviceId/action/:actionId', deviceController.device_action_execute_post);
 
-module.exports = router
+module.exports = router;
