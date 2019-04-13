@@ -25,14 +25,16 @@ const getIps = () => {
 const ips = getIps();
 //ip visible for other machines
 const ip = ips && ips.length > 0 ? ips[0] : "";
+config.ip = ip;
 //as machine sees itself
 const internalIp = ip;
 //unique id for every machine in the network
 const id = config.id;   
 const hostName = os.hostname();
+config.hostName = hostName;
 //"client" or "server"
 const mode = config.mode;
-module.exports.confg = config;
+module.exports.config = config;
 
 module.exports.startUDPListenBroadcast = () => {
 

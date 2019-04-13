@@ -12,5 +12,5 @@ module.exports.machine_create_post = (req, res) => {
 }
 
 module.exports.machine_discovery_get = (req, res) => {
-    res.json(machineService.confg);
+    res.json(machineService.config);
 }

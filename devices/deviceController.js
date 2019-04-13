@@ -40,6 +40,6 @@ module.exports.device_action_execute_post = (req, res) => {
         return;
     }
     console.log(`executing ${action.id}`);
-    action.params = {};
+    action.params = req.body.actionParams;
     deviceService.executeAction(action, result => res.json(result));
 }

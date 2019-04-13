@@ -9,7 +9,8 @@
             "actions" : 
                 [
                     { "id" : "read", "type" : "read", "customAction" : "osService"},
-                    { "id" : "sleep", "type" : "post", "customAction" : "osService"}
+                    { "id" : "sleep", "type" : "post", "customAction" : "osService"},
+                    { "id" : "wake", "type" : "post", "customAction" : "wolService", "params" : ["macAddress"]}
                 ] 
         }           
     ]

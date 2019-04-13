@@ -8,9 +8,19 @@
             "description" : "Termometr na biurku",
             "actions" : 
                 [
-                    { "id" : "readTemp", "type" : "get", "customAction" : "dhtService"},
-                    { "id" : "readHumidity", "type" : "get", "customAction" : "dhtService"}
+                    { "id" : "readTemp", "type" : "read", "customAction" : "dhtService"},
+                    { "id" : "readHumidity", "type" : "read", "customAction" : "dhtService"}
                 ] 
-        }     
+        },
+        {
+            "id" : "OS", 
+            "description" : "Basic OS information",
+            "actions" : 
+                [
+                    { "id" : "read", "type" : "read", "customAction" : "osService"},
+                    { "id" : "wake", "type" : "post", "customAction" : "wolService", "params" : ["macAddress"]}
+                ] 
+        }
+             
     ]
 }
