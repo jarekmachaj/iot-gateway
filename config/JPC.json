@@ -1,0 +1,20 @@
+{
+    "id" : "WindowsServer",
+    "mode" : "server",
+    "protocol" : "http",
+    "api" : "/api",
+    "port" : "3000",
+    "devices" :
+    [        
+        { 
+            "id" : "OS", 
+            "description" : "Basic OS information",
+            "actions" : 
+                [
+                    { "id" : "read", "type" : "read", "customAction" : "osService"},
+                    { "id" : "sleep", "type" : "post", "customAction" : "osService"},
+                    { "id" : "wake", "type" : "post", "customAction" : "wolService", "params" : ["macAddress"]}
+                ] 
+        }           
+    ]
+}
