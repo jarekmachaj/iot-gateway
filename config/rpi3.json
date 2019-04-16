@@ -1,6 +1,9 @@
 {
     "id" : "MyPrimeRaspberry",
     "mode" : "server",
+    "protocol" : "http",
+    "api" : "/api",
+    "port" : "3000",
     "devices" :
     [        
         { 

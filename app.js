@@ -42,5 +42,6 @@ app.use(function(err, req, res, next) {
 
 //udp broadcast
 machineService.startUDPListenBroadcast();
+machineService.startMachinesDiscovery();
 
 module.exports = app;

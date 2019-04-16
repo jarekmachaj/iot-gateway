@@ -5,6 +5,7 @@ const configPath = path.join(__dirname, '..', 'config', 'config.json');
 const fs = require("fs");
 const bcast = require("./utils/udpBroadcast");
 const persistenceService = require('../systemServices/persistence');
+const request = require('request');
 
 const configJson = fs.readFileSync(configPath);
 const config = JSON.parse(configJson.toString()); 
@@ -24,8 +25,9 @@ const getIps = () => {
 
 const ips = getIps();
 //ip visible for other machines
-const ip = ips && ips.length > 0 ? ips[0] : "";
-config.ip = ip;
+let ip = ips && ips.length > 0 ? ips[0] : "";
+config.ip = config.forceIp ? config.forceIp : ip;
+ip = config.ip;
 //as machine sees itself
 const internalIp = ip;
 //unique id for every machine in the network
@@ -36,6 +38,15 @@ config.hostName = hostName;
 const mode = config.mode;
 module.exports.config = config;
 
+const registerMachine  = (machine, machineIp) => {
+    if (machineIp && machine.id){
+        machineIp = (machineIp == "127.0.0.1") ? ip : machineIp;
+        if (machineIp == ip) machine.host = "self";        
+        machine.ip = machineIp;
+    }   
+    persistenceService.registerMachine(machine);
+}
+
 module.exports.startUDPListenBroadcast = () => {
 
     bcast.broadcastedMessage =  {
@@ -43,16 +54,31 @@ module.exports.startUDPListenBroadcast = () => {
         mode : mode, timeStamp : new Date(new Date().toUTCString())
     }
     bcast.onMessageReceived = (machine, machineIp) => {
-        persistenceService.registerMachine(machine, machineIp);        
+        registerMachine(machine, machineIp);        
     }
 
     bcast.startUDPListenBroadcast();
-}
+};
 
-module.exports.startMachinesDiscoveryJob = () => {
+module.exports.registerMachine = registerMachine;
+
+module.exports.startMachinesDiscovery = () => {
     setInterval(() => {
-        
-    }, 2000);
+        console.log("--- REGISTERING (interval) ----")
+        let machinesInQueue = persistenceService.dequeueMachines();
+        machinesInQueue.forEach(machineToDiscover => {
+            console.log(`Checking ${JSON.stringify(machineToDiscover)}`);
+            request(`${machineToDiscover.protocol}://${machineToDiscover.ip}${machineToDiscover.api}/machines/discovery`, function (error, response, body) {
+               if (error) { 
+                    console.log(error);
+                   return
+                };
+               console.log(`Success`);
+               console.log(response);
+               persistenceService.registerDiscoveredMachine(response);
+            });            
+        });        
+    }, 6000);
 }
 
 module.exports.stopUDPListenBroadcast = () => { return "Not yet :)" };

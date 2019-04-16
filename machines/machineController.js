@@ -2,7 +2,7 @@ const persitenceService = require('../systemServices/persistence');
 const machineService = require('./machineService');
 
 module.exports.machines_list = (req, res) => {
-    res.json(persitenceService.recognizedMachines);
+    res.json(persitenceService.registeredMachines);
 }
 
 module.exports.machine_create_post = (req, res) => {

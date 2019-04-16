@@ -1,12 +1,8 @@
 const os = require("os");
 const ifaces = os.networkInterfaces();
 
-const recognizedMachines = {};
-module.exports.recognizedMachines = recognizedMachines;
-
-const discoveredMachines = {};
-module.exports.discoveredMachines = discoveredMachines;
-
+const recognizedMachinesQueue = [];
+const registeredMachines = {};
 const getIps = () => {
     let ips = [];
     Object.keys(ifaces).forEach(function (ifname) {
@@ -19,20 +15,30 @@ const getIps = () => {
     });        
     return ips; 
 }
-
 const ips = getIps();
 //ip visible for other machines
 const ip = ips && ips.length > 0 ? ips[0] : "";
 
-module.exports.registerMachine = (machine, machineIp) => {
-    if (machineIp){
-        machineIp = machineIp == "127.0.0.1" ? ip : machineIp;
-        if (machineIp == ip) machine.host = "self";
-        machine.ip = machineIp;
-    }         
-    recognizedMachines[machine.id] = machine;
+module.exports.recognizedMachinesQueue = recognizedMachinesQueue;
+
+module.exports.registeredMachines = registeredMachines;
+
+module.exports.registerMachine = (machine) => {
+    if (machine == undefined || machine == null) return;   
+    if (recognizedMachinesQueue.find(queueMachine => queueMachine.ip == machine.ip) != undefined) return;
+    if (registeredMachines.hasOwnProperty(machine.id)) return;
+
+    recognizedMachinesQueue.push(machine);
 }
 
-module.exports.discoverMachine = (registeredMachineName) => {
-    
+module.exports.registerDiscoveredMachine = (machine) => {
+    console.log("--- REGISTERING----")
+    if (machine && machine.id && machine.ip && !registeredMachines.keys[machine.id])
+        registeredMachines[machine.id] = machine;
+}
+
+module.exports.dequeueMachines = () => {
+    let machines = Array.from(recognizedMachinesQueue);
+    recognizedMachinesQueue.length = 0;
+    return machines;
 }

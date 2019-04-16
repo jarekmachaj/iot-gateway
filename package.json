@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "debug": "set DEBUG=app & npm start"
+    "debug": "set DEBUG=udp & npm start"
   },
   "dependencies": {
     "cookie-parser": "^1.4.4",
@@ -14,8 +14,9 @@
     "http-errors": "^1.6.3",
     "memory-cache": "^0.2.0",
     "morgan": "~1.9.0",
+    "node-dht-sensor": "0.0.34",
+    "request": "^2.88.0",
     "systeminformation": "^4.1.4",
-    "wake_on_lan": "^1.0.0",
-    "node-dht-sensor": "0.0.34"    
+    "wake_on_lan": "^1.0.0"
   }
 }

@@ -1,20 +1,12 @@
 {
-    "id" : "MyZeroRaspberry",
+    "id" : "Rpi1Wake",
     "mode" : "server",
+    "forceIp" : "192.168.1.203",    
     "protocol" : "http",
     "api" : "/api",
     "port" : "3000",
     "devices" :
-    [
-        {
-            "id" : "piZeroDHT",
-            "description" : "Termometr na biurku",
-            "actions" : 
-                [
-                    { "id" : "readTemp", "type" : "read", "customAction" : "dhtService"},
-                    { "id" : "readHumidity", "type" : "read", "customAction" : "dhtService"}
-                ] 
-        },
+    [        
         {
             "id" : "OS", 
             "description" : "Basic OS information",
