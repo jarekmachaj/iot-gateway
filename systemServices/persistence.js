@@ -3,20 +3,6 @@ const ifaces = os.networkInterfaces();
 
 const recognizedMachinesQueue = [];
 const registeredMachines = {};
-const getIps = () => {
-    let ips = [];
-    Object.keys(ifaces).forEach(function (ifname) {
-        ifaces[ifname].forEach(function (iface) {
-            if (iface.family == 'IPv4' && iface.internal == false) {
-                ips.push(iface.address);
-            }          
-        });
-    });        
-    return ips; 
-}
-const ips = getIps();
-//ip visible for other machines
-const ip = ips && ips.length > 0 ? ips[0] : "";
 
 module.exports.recognizedMachinesQueue = recognizedMachinesQueue;
 
