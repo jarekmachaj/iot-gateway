@@ -48,9 +48,8 @@ const registerMachine  = (machine, machineIp) => {
 }
 
 module.exports.startUDPListenBroadcast = () => {
-
     bcast.broadcastedMessage =  {
-        id : id, ip : ip, internalIp : internalIp, hostname : hostName, 
+        id : id, ip : ip, internalIp : internalIp, protocol : config.protocol, api : config.api, port : config.port, hostname : hostName, 
         mode : mode, timeStamp : new Date(new Date().toUTCString())
     }
     bcast.onMessageReceived = (machine, machineIp) => {
