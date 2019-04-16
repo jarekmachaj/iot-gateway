@@ -8,7 +8,6 @@ const getIps = () => {
     Object.keys(ifaces).forEach(function (ifname) {
         ifaces[ifname].forEach(function (iface) {
             if (iface.family == 'IPv4' && iface.internal == false) {
-                console.log();
                 ips.push(iface.address);
             }          
         });
@@ -31,10 +30,11 @@ module.exports.registerMachine = (machine) => {
     recognizedMachinesQueue.push(machine);
 }
 
-module.exports.registerDiscoveredMachine = (machine) => {
-    console.log("--- REGISTERING----")
-    if (machine && machine.id && machine.ip && !registeredMachines.keys[machine.id])
+module.exports.registerDiscoveredMachine = (machine) => {   
+    if (machine && machine.id && machine.ip && !registeredMachines.hasOwnProperty(machine.id)) {
+        console.log("To collection");
         registeredMachines[machine.id] = machine;
+    }
 }
 
 module.exports.dequeueMachines = () => {
