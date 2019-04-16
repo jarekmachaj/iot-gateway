@@ -32,7 +32,6 @@ module.exports.registerMachine = (machine) => {
 
 module.exports.registerDiscoveredMachine = (machine) => {   
     if (machine && machine.id && machine.ip && !registeredMachines.hasOwnProperty(machine.id)) {
-        console.log("To collection");
         registeredMachines[machine.id] = machine;
     }
 }

@@ -69,7 +69,6 @@ module.exports.startMachinesDiscovery = () => {
                     console.log(error);
                    return
                 };
-               console.log(body);
                persistenceService.registerDiscoveredMachine(JSON.parse(body));
             });            
         });        
