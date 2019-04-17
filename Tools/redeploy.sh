@@ -9,7 +9,7 @@ git checkout master
 git reset --hard origin/master
 npm install
 #Stop all processes
-sudo forever stopall
+forever stopall
 
 #Move back and prepare to rename the Git Repo
 cd ..
