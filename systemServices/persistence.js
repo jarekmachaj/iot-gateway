@@ -48,6 +48,7 @@ module.exports.getDevices = () => {
                         action.port = machine.port;
                         action.protocol = machine.protocol;
                         action.deviceId = device.id;
+                        action.host = machine.host;
                     });
                 }
                 devices.push(device);

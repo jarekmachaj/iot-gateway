@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>XXX</title>
+    <title>home</title>
     <link rel="stylesheet" href="/stylesheets/bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" href="/stylesheets/bootstrap/bootstrap-table.min.css" />
     <link href="/stylesheets/jsonTree.css" rel="stylesheet" />
@@ -33,7 +33,7 @@
     </style>
   </head>
   <body>            
-    <div class="container" style="min-width:80%">      
+    <div class="container"  style="min-width:80%">      
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="#">Navbar text</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -139,7 +139,7 @@
         var objStr = JSON.parse(unescape(content));
         $('#actionDetailsTable').bootstrapTable({ data : []});
         $('#actionDetailsTable').bootstrapTable('load', [objStr]);
-        document.querySelectorAll('a.actionUrl').forEach( (x) => {x.innerHTML = `${objStr.protocol}://${objStr.ip}:${objStr.port}${objStr.api}/devices/${objStr.deviceId}/actions/${objStr.id}`} );
+        document.querySelectorAll('a.actionUrl').forEach( (x) => {x.innerHTML = `${objStr.protocol}://${window.location.hostname}:${window.location.port}${objStr.api}/devices/${objStr.deviceId}/actions/${objStr.id}`} );
         //document.querySelector('#actionUrl').setAttribute('href', document.querySelector('a.actionUrl').innerHTML);
         document.querySelectorAll('a.actionUrl').forEach( (x) => {x.addEventListener('click', () => { fetchActionAndDisplayResult(document.querySelector('a.actionUrl').innerHTML) } )});
         $('#actionsModal').modal('toggle');

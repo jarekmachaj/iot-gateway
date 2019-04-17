@@ -22,23 +22,17 @@ module.exports.device_action_details_get = (req, res) => {
 }
 
 module.exports.device_action_execute_post = (req, res) => {
-    var deviceId = req.params.deviceId;
-    var device = deviceService.config.devices.find(device => device.id == deviceId);
-    if (device == undefined) {
+    if (req.params.deviceId == undefined || req.params.deviceId == '') {
         res.send('Device not found');
         return;
     }
+    let deviceId = req.params.deviceId;
+   
     if(req.params.actionId == undefined || req.params.actionId == ''){
         res.send('Action not defined');
         return;
-    }
+    }   
+    let actionId = req.params.actionId;
     
-    var actionId = req.params.actionId;
-    var action = device.actions.find(action => action.id == actionId);
-    if (action == undefined) {
-        res.send(`Action ${actionId} not found`);
-        return;
-    }
-    action.params = req.body;
-    deviceService.executeAction(action, result => res.json(result));
+    deviceService.executeAction(deviceId, actionId, req.body, result => res.json(result));
 }

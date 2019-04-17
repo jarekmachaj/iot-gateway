@@ -1,3 +1,4 @@
+mkdir temp
 #to temp
 cd temp
 #Clone the repo
