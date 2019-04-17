@@ -1,5 +1,5 @@
 {
-    "id" : "MyPrimeRaspberry",
+    "id" : "MyHomeRaspberry",
     "mode" : "server",
     "protocol" : "http",
     "api" : "/api",

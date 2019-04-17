@@ -39,9 +39,9 @@ module.exports.config = config;
 
 const registerMachine  = (machine, machineIp) => {
     if (machineIp && machine.id){
-        machineIp = (machineIp == "127.0.0.1") ? ip : machineIp;
+        machineIp = (machineIp == "127.0.0.1") ? ip : machineIp;        
         if (machineIp == ip) machine.host = "self";        
-        machine.ip = machineIp;        
+        machine.ip = machineIp;              
         persistenceService.registerMachine(machine);
     }       
 }
@@ -69,7 +69,10 @@ module.exports.startMachinesDiscovery = () => {
                     console.log(error);
                    return
                 };
-               persistenceService.registerDiscoveredMachine(JSON.parse(body));
+               let validatedMachine = JSON.parse(body);
+               validatedMachine.host = machineToDiscover.host == "self" ? "self" : "remote";
+               validatedMachine.timeStamp = new Date(new Date().toUTCString());
+               persistenceService.registerDiscoveredMachine(validatedMachine);
             });            
         });        
     }, 6000);

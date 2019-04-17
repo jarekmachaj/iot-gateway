@@ -1,5 +1,5 @@
 {
-    "id" : "Rpi1Wake",
+    "id" : "MyWakeRaspberry",
     "mode" : "server",
     "forceIp" : "192.168.1.203",    
     "protocol" : "http",

@@ -1,13 +1,192 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous" />
+    <title>XXX</title>
+    <link rel="stylesheet" href="/stylesheets/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="/stylesheets/bootstrap/bootstrap-table.min.css" />
+    <link href="/stylesheets/jsonTree.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/json2html/1.2.0/json2html.min.js"></script>
+    <script src="/javascripts/bootstrap/bootstrap.min.js"></script>
+    <script src="/javascripts/bootstrap/bootstrap-table.min.js"></script>
+    <script src="/javascripts/bootbox.all.min.js"></script>      
+    <script src="/javascripts/jsonTree.js"></script>
+    <style>
+      .fas { display:inline; }
+      body {
+        background: black;
+        color: #20C20E;
+      }
+      pre.jsonOutput {
+        height: auto;
+        max-height: 200px;
+        min-height: 700px;
+        overflow: auto;
+        background-color: #eeeeee;
+        word-break: normal !important;
+        word-wrap: normal !important;
+        white-space: pre !important;
+        max-width: 100%;
+    }​
+    </style>
   </head>
-  <body>
-    <h1><%= title %></h1>
-    <i class="fas fa-igloo"></i> 
-    <p>Welcome to <%= title %></p>
+  <body>            
+    <div class="container" style="min-width:80%">      
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Navbar text</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Pricing</a>
+                </li>
+              </ul>
+              <span class="navbar-text">
+                Navbar text with an inline element
+              </span>
+            </div>
+          </nav>
+      <h2>Machines</h2>
+      <table id="machinesTable" class="table table-striped table-dark">
+        <thead>
+          <tr>
+              <th data-field="id">ID</th>
+              <th data-field="hostName">Hostname</th>
+              <th data-field="ip">Ip</th>
+              <th data-field="host">Host</th>
+              <th data-field="mode">Mode</th>                
+              <th data-field="port">Port</th>
+              <th data-field="timeStamp" data-formatter="dateFormat">Last response</th>
+          </tr>
+        </thead>
+      </table>
+      <h2>Devices</h2>
+      <table id="devicesTable" class="table table-striped table-dark">
+          <thead>
+            <tr>
+                <th style="width: 30%" data-field="machine">Machine</th>
+                <th style="width: 20%" data-field="id">ID</th>                
+                <th style="width: 10%" data-field="description">Description</th>
+                <th style="width: 40%" data-field="actions" data-formatter="actionsFormat">Actions</th>
+            </tr>
+          </thead>
+        </table>
+    </div>
+      <!-- Modal -->
+      <div class="modal fade lg" id="actionsModal" tabindex="-1" role="dialog" aria-labelledby="actionsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content bg-light text-dark">
+            <div class="modal-header">
+              <h5 class="modal-title" id="actionsModalLabel">Action details</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <table id="actionDetailsTable" class="table table-light">
+                    <thead>
+                      <tr>
+                          <th data-field="id">Action ID</th>
+                          <th data-field="type">Action type</th>
+                          <th data-field="customAction">Custom action</th>
+                          <th data-field="machine">Machine</th>
+                      </tr>
+                    </thead>                          
+                  </table>                  
+                  <div class="card" style="margin: 20px;">             
+                    <div style="margin: 20px; margin-bottom: 20px"> <button type="button" class="btn btn-info" style="min-width: 100px">Direct</button> <button type="button" class="btn btn-success" style="min-width: 100px">POST</button> <a href="#" class="actionUrl"></a></div>
+                    <div style="margin: 20px; margin-bottom: 20px"> <button type="button" class="btn btn-info" style="min-width: 100px">Remote</button> <button type="button" class="btn btn-success" style="min-width: 100px">POST</button> <a href="#" class="actionUrl"></a></div>                                              
+                  </div>
+                  <div>
+                    <ul class="list-group list-group-flush">
+                      <li class="jsonResult"></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <script>      
+      let ready = (callback) => {
+          // in case the document is already rendered
+          if (document.readyState!='loading') callback();
+          // modern browsers
+          else if (document.addEventListener) document.addEventListener('DOMContentLoaded', callback);
+          // IE <= 8
+          else document.attachEvent('onreadystatechange', function(){
+              if (document.readyState=='complete') callback();
+          });
+      }
+
+     function dateFormat (value, row, index, field) {   
+        return new Date(value).toLocaleString()
+      }
+
+      function fillpopup(content){
+        var objStr = JSON.parse(unescape(content));
+        $('#actionDetailsTable').bootstrapTable({ data : []});
+        $('#actionDetailsTable').bootstrapTable('load', [objStr]);
+        document.querySelectorAll('a.actionUrl').forEach( (x) => {x.innerHTML = `${objStr.protocol}://${objStr.ip}:${objStr.port}${objStr.api}/devices/${objStr.deviceId}/actions/${objStr.id}`} );
+        //document.querySelector('#actionUrl').setAttribute('href', document.querySelector('a.actionUrl').innerHTML);
+        document.querySelectorAll('a.actionUrl').forEach( (x) => {x.addEventListener('click', () => { fetchActionAndDisplayResult(document.querySelector('a.actionUrl').innerHTML) } )});
+        $('#actionsModal').modal('toggle');
+      }
+
+      function fetchActionAndDisplayResult(actionUrl){
+        document.querySelector('li.jsonResult').innerHTML = "";
+        fetch(actionUrl, { method: 'POST'} )
+        .then((res) => res.json())
+        .then((data) =>  {            
+            var tree = jsonTree.create(data, document.querySelector('li.jsonResult'));  
+          })
+        .catch(error => console.error(error));        
+      }
+
+      function actionsFormat (value, row, index, field) {  
+        console.log(value);
+        let list = $('<ul class="actionList fa-ul">');
+        value.forEach(action => {
+          let li = $(`<li class="actionListItem fa-li"><a style="color:white" href="#" onclick="fillpopup('${escape(JSON.stringify(action))}')"><i class="fas fa-bolt" style="color:yellow"></i>&nbsp;${action.id}</a></li>`)
+          li.appendTo(list);
+        });
+        return $(list).prop('outerHTML');
+      }
+
+      let fetchAndupdate = (url, callback) => {
+        fetch(url)
+            .then(response => response.json())
+            .then(data =>  {
+              callback(data);
+            });     
+        setInterval(() => {
+          fetch(url)
+            .then(response => response.json())
+            .then(data =>  {
+              callback(data);
+            });            
+          }, 10000);
+      }
+
+      ready(() => {
+        $('#machinesTable').bootstrapTable({ data : []});
+        fetchAndupdate('/api/machines', (data) => { $('#machinesTable').bootstrapTable('load', data);})
+
+        $('#devicesTable').bootstrapTable({ data : []});
+        fetchAndupdate('/api/devices', (data) => { $('#devicesTable').bootstrapTable('load', data);})        
+      });
+    </script>
   </body>
 </html>

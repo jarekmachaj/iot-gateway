@@ -2,7 +2,7 @@ const deviceService = require('./deviceService');
 const persistenceService = require('../systemServices/persistence');
 
 module.exports.devices_list = (req, res) => {
-    res.json(deviceService.config.devices);
+    res.json(persistenceService.getDevices());
 }
 
 module.exports.device_details_get = (req, res) => {

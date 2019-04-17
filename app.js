@@ -5,10 +5,13 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const debug = require('debug')('app');
 const machineService = require('./machines/machineService')
+var cors = require('cors')
 
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
 const app = express();
+
+app.use(cors()); // Use this after the variable declaration
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -28,6 +31,7 @@ app.use('/api', apiRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
 
 // error handler
 app.use(function(err, req, res, next) {
