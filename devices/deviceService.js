@@ -6,13 +6,14 @@ const config = JSON.parse(configJson.toString());
 const persistenceService = require('../systemServices/persistence');
 const request = require('request');
 
-module.exports.executeAction = async (deviceId, actionId, reqBody, callback, self) => {       
+module.exports.executeAction = async (deviceId, actionId, reqBody, self, callback) => {       
     let devices = persistenceService.getDevices();
     let actionDevices = devices.filter(device => device.id == deviceId).map(devicesWithActions => devicesWithActions.actions);    
     let merged = [].concat.apply([], actionDevices)
     let actionsToExecute = merged.filter(actionDevice => actionDevice.id == actionId);
     var results = [];
     var resultsPromises = [];
+    if (self) actionsToExecute = actionsToExecute.filter(actionToExecute => actionToExecute.host == "self");
     console.log(actionsToExecute);
     actionsToExecute.forEach(actionToExecute => {
         if (actionToExecute.host == "self") {
@@ -26,7 +27,7 @@ module.exports.executeAction = async (deviceId, actionId, reqBody, callback, sel
             var url = `${actionToExecute.protocol}://${actionToExecute.ip}:${actionToExecute.port}${actionToExecute.api}/devices/${actionToExecute.deviceId}/actions/${actionToExecute.id}`;
             console.log(`fetching ${url}`);
             resultsPromises.push(new Promise((resolve, reject) => {
-                request( {url : url, method : 'POST', json: true}, (error, response, body)  => {
+                request( {url : url, method : 'POST', json: {once: true}}, (error, response, body)  => {
                     if (error) { 
                          console.log('error: ' + error);
                          reject(error);

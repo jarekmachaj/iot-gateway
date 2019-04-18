@@ -34,5 +34,5 @@ module.exports.device_action_execute_post = async (req, res) => {
     }   
     let actionId = req.params.actionId;
     
-    deviceService.executeAction(deviceId, actionId, req.body, result => res.json(result));
+    deviceService.executeAction(deviceId, actionId, req.body, req.body.once ? true : false, result => res.json(result));
 }
