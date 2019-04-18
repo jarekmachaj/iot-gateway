@@ -6,13 +6,14 @@ const config = JSON.parse(configJson.toString());
 const persistenceService = require('../systemServices/persistence');
 const request = require('request');
 
-module.exports.executeAction = async (deviceId, actionId, reqBody, callback) => {       
+module.exports.executeAction = async (deviceId, actionId, reqBody, callback, self) => {       
     let devices = persistenceService.getDevices();
     let actionDevices = devices.filter(device => device.id == deviceId).map(devicesWithActions => devicesWithActions.actions);    
     let merged = [].concat.apply([], actionDevices)
     let actionsToExecute = merged.filter(actionDevice => actionDevice.id == actionId);
     var results = [];
     var resultsPromises = [];
+    console.log(actionsToExecute);
     actionsToExecute.forEach(actionToExecute => {
         if (actionToExecute.host == "self") {
             if (actionToExecute.customAction) {
@@ -30,8 +31,11 @@ module.exports.executeAction = async (deviceId, actionId, reqBody, callback) => 
                          console.log('error: ' + error);
                          reject(error);
                      };
-                     body.ip = actionToExecute.ip;
-                     resolve(body);         
+                     if (body) {
+                            body.ip = actionToExecute.ip;
+                            resolve(body); 
+                     }
+                     reject(error);        
                  }); 
             }));
             

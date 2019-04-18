@@ -21,7 +21,7 @@ module.exports.device_action_details_get = (req, res) => {
     res.send('not implemented');
 }
 
-module.exports.device_action_execute_post = (req, res) => {
+module.exports.device_action_execute_post = async (req, res) => {
     if (req.params.deviceId == undefined || req.params.deviceId == '') {
         res.send('Device not found');
         return;
